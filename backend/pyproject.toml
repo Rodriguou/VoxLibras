@@ -1,0 +1,62 @@
+[project]
+name = "voxlibras"
+version = "0.1.0"
+description = "VoxLibras backend: real-time PT-BR speech recognition and Libras gloss over WebSocket."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "azure-cognitiveservices-speech>=1.53.1",
+    "fastapi>=0.165.0",
+    "httpx>=0.28.1",
+    "pydantic-settings>=2.16.3",
+    "uvicorn[standard]>=0.54.0",
+]
+
+[build-system]
+requires = ["uv_build>=0.12.5,<0.13"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pyright>=1.1.414",
+    "pytest>=9.2.0",
+    "pytest-asyncio>=1.5.0",
+    "ruff>=0.17.6",
+]
+
+# --- Ruff ------------------------------------------------------------------
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E", "W", "F", "I", "N", "UP", "B", "A", "C4", "SIM", "RUF", "ANN", "D", "S",
+    "ASYNC", "PT", "TRY", "PL", "PTH", "ERA",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "D", "ANN", "PLR2004"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.isort]
+known-first-party = ["voxlibras"]
+
+# --- Pyright ---------------------------------------------------------------
+[tool.pyright]
+typeCheckingMode = "strict"
+pythonVersion = "3.13"
+venvPath = "."
+venv = ".venv"
+include = ["src", "tests"]
+
+# --- Pytest ----------------------------------------------------------------
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+pythonpath = ["."]
+testpaths = ["tests"]
+addopts = ["--strict-markers"]
